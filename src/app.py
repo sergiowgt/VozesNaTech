@@ -26,4 +26,4 @@ class WebApp:
         #app = FastAPI(title=webapp_settings.title, version=webapp_settings.version, debug=webapp_settings.debug)
         app = FastAPI()
         WebApp.config_routes(app)
-        uvicorn.run(app, host='127.0.0.1', port=5000)
+        uvicorn.run(app, host='0.0.0.0', port=5000)
