@@ -22,7 +22,7 @@ class DbHandler(IDbHandler):
         self.session.flush()
 
     def close(self) -> None:
-        self.session.close()
+        #self.session.close()
         self.engine.dispose(close=True)
 
     def open(self) -> None:

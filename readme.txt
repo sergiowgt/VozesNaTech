@@ -12,8 +12,22 @@ INSTALAÇÃO UBUNTU 20.04.6
 ssh root@vps57609.publiccloud.com.br
 sudo apt update && sudo apt upgrade -y
 sudo apt-get install python3.13
+python3.13 --version
+sudo apt install mysql-client
+mysql --version
+
+
+
+rm -rf VozesNaTech
+
+./atualizar_vozesnatech.sh
 
 
 
 git clone https://github.com/sergiowgt/VozesNaTech.git
+
+
+
 http://vps57609.publiccloud.com.br:5000/health/
+
+
