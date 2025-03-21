@@ -9,6 +9,7 @@ class DbHandler(IDbHandler):
 
     def __init__(self, db_config: DbConfig):
         self.db_path: str=f"{db_config.driver}://{db_config.user}:{db_config.password}@{db_config.host}/{db_config.db_name}"
+        print(self.db_path)
         self.db_timout = db_config.timeout
         self.db_echo = db_config.echo.upper() == "TRUE"
 
@@ -23,7 +24,8 @@ class DbHandler(IDbHandler):
 
     def close(self) -> None:
         #self.session.close()
-        self.engine.dispose(close=True)
+        #self.engine.dispose(close=True)
+        ...
 
     def open(self) -> None:
         self.engine = create_engine(self.db_path, echo=self.db_echo)

@@ -28,6 +28,6 @@ git clone https://github.com/sergiowgt/VozesNaTech.git
 
 
 
-http://vps57609.publiccloud.com.br:5000/health/
+http://vps57609.publiccloud.com.br:5000/health/db
 
 

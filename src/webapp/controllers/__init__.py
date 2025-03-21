@@ -1,2 +1,2 @@
 from .teste_controller import teste_route
-from .health_controller import health_route
+from .health_controller import create_health_router
