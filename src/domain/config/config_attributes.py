@@ -1,4 +1,4 @@
-from support.entities.base_config_atributtes import FieldLen
+from src.support.entities.base_config_atributtes import FieldLen
 
 DESCRIPTION_FIELD = FieldLen(5, 100, 0)
 EMAIL_FIELD = FieldLen(0, 100, 0)

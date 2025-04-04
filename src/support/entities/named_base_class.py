@@ -1,9 +1,10 @@
 from dataclasses import dataclass
-from ..validators_exceptions import DomainValidator
-from src.domain.config.config_atributes import NAME_FIELD
+from .base_class import BaseClass
+from src.support.validators_exceptions.domain_validator import DomainValidator
+from src.support.entities.base_config_atributtes import NAME_FIELD
 
 @dataclass
-class NamedClassBase(ClassBase):
+class NamedClassBase(BaseClass):
     _class_name= 'NamedClassBase'
     _gender_name= 'do'
     name: str = ''

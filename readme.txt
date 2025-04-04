@@ -16,6 +16,10 @@ python3.13 --version
 sudo apt install mysql-client
 mysql --version
 
+alembic init alembic
+alembic revision --autogenerate -m "descrição da migração"
+
+pwd
 
 
 rm -rf VozesNaTech
@@ -28,6 +32,8 @@ git clone https://github.com/sergiowgt/VozesNaTech.git
 
 
 
-http://vps57609.publiccloud.com.br:5000/health/db
+http://vps57609.publiccloud.com.br:8000/health/db
+
+http://vps57609.publiccloud.com.br:8000/docs
 
 

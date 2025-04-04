@@ -1,6 +1,6 @@
 from datetime import date
 import re
-from domain_validation_error import DomainValidationError
+from .domain_validation_error import DomainValidationError
 from dateutil.relativedelta import relativedelta
 
 class DomainValidator:

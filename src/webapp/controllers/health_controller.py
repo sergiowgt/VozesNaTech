@@ -4,6 +4,7 @@ from src.infra.adapters.database.db_handler import DbHandler
 from src.infra.adapters.db_config.db_config import DbConfig
 
 async def check_database(db_config: DbConfig):
+    print(db_config.db_name)
     db_handler = DbHandler(db_config)
 
     try:

@@ -1,2 +1,3 @@
 from .teste_controller import teste_route
 from .health_controller import create_health_router
+from .business_area_controller import business_area_router

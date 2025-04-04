@@ -1,10 +1,11 @@
 from dataclasses import dataclass
-from src.domain.validators.domain_validator import DomainValidator
-from src.domain.exceptions.domain_validation_error import DomainValidationError
-from src.domain.enums.status_enum import StatusEnum
+
+from src.support.validators_exceptions.domain_validation_error import DomainValidationError
+from src.support.validators_exceptions.domain_validator import DomainValidator
+from src.support.enums.status_enum import StatusEnum
 
 @dataclass
-class ClassBase:
+class BaseClass:
     _class_name= 'Classe Base'
     _gender_name= 'da'
     id: int = 0
