@@ -1,8 +1,8 @@
-"""Initial migration
+"""descrição da migração
 
-Revision ID: a6f575443f8e
+Revision ID: 48a353136185
 Revises: 
-Create Date: 2025-03-24 17:57:10.195162
+Create Date: 2025-04-04 16:29:01.277510
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ from src.infra.adapters.orm.database_schema import StatusType, DescriptionType, 
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'a6f575443f8e'
+revision: str = '48a353136185'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -43,6 +43,7 @@ def upgrade() -> None:
     sa.Column('ethnicity', DescriptionType(length=100), nullable=False),
     sa.Column('birth_date', sa.Date(), nullable=False),
     sa.Column('female_gender', sa.Boolean(), nullable=False),
+    sa.Column('password', EmailType(length=100), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('SurveyQuestion',

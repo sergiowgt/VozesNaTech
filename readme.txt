@@ -19,7 +19,17 @@ mysql --version
 alembic init alembic
 alembic revision --autogenerate -m "descrição da migração"
 
-pwd
+deleta conteudi do  diretorio
+alembic revision --autogenerate -m "descrição da migração"
+
+
+
+alembic revision --autogenerate -m "descrição_da_migração"
+alembic upgrade head
+
+
+
+
 
 
 rm -rf VozesNaTech

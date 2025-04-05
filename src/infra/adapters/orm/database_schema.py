@@ -62,7 +62,8 @@ list_user_schema = ([x.copy() for x in list_name_type_schema] +
         Column('cell_phone', CellPhoneType, nullable = False), 
         Column('ethnicity', DescriptionType, nullable = False), 
         Column('birth_date', Date, nullable = False), 
-        Column('female_gender', Boolean, nullable = False)
+        Column('female_gender', Boolean, nullable = False),
+        Column('password', EmailType, nullable = False)
     ]
 )
 

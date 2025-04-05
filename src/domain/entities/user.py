@@ -1,19 +1,20 @@
 from dataclasses import dataclass
 from datetime import date
-from src.domain.config.config_attributes import EMAIL_FIELD, CELLPHONE_FIELD, BIRTH_DATE_FIELD
+from src.domain.config.config_attributes import EMAIL_FIELD, CELLPHONE_FIELD, BIRTH_DATE_FIELD, PASSWORD_FIELD
 from src.support.validators_exceptions.domain_validator import DomainValidator
 from src.support.entities.named_base_class import NamedClassBase
 from src.support.validators_exceptions.domain_validation_error import DomainValidationError
 
 @dataclass
 class User(NamedClassBase):
-    _class_name= 'Classe Base Pessoa'
-    _gender_name= 'da'
+    _class_name= 'Usuário'
+    _gender_name= 'do'
     email: str = ''
     cell_phone: str = ''
     ethnicity: str = ''
     birth_date: date = None
     female_gender: bool = True
+    password: str = ''
 
     def validate(self):
         super().validate() 
@@ -23,4 +24,5 @@ class User(NamedClassBase):
         DomainValidationError.when(not isinstance(self.female_gender, bool), "Identificação como gênero feminino não é válido")
         DomainValidationError.when(isinstance(self.ethnicity, str) is False, "Raça/Etnia não é uma string")
         DomainValidationError.when(self.ethnicity is None, 'Raça/Etnia está vazio')
+        DomainValidator.validate_password(self.password, f'senha {self._repr}', min_len=PASSWORD_FIELD.min, max_len=PASSWORD_FIELD.max)
  

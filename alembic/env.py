@@ -13,22 +13,10 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-
-def getDbconfig()->DbConfig:
-    driver =  os.environ.get('DB_DRIVER', '')
-    host =  os.environ.get('DB_HOST', '')
-    db_name = os.environ.get('DB_NAME', '')
-    user = os.environ.get('DB_USER', '')
-    password = os.environ.get('DB_PASSWORD', '')
-    echo = os.environ.get('DB_ECHO', '')
-    timeout = os.environ.get('DB_TIMEOUT', 0)
-
-    return DbConfig(driver, host, db_name, user, password, echo, timeout)
-
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 load_dotenv()
-db_config = getDbconfig()
+db_config =  DbConfig()
 config = context.config
 config.set_main_option("sqlalchemy.url", db_config.get_path())
 
