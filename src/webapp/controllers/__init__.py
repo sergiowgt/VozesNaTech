@@ -2,3 +2,4 @@ from .health_controller import create_health_router
 from .business_area_controller import business_area_router
 from .user_controller import user_router
 from .login_controller import login_router
+from .survey_controller import survey_router

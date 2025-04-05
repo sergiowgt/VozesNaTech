@@ -4,7 +4,7 @@ import uvicorn
 from fastapi.openapi.utils import get_openapi
 from src.infra.adapters.orm.orm_define import start_mappers
 from src.infra.adapters.db_config.db_config import DbConfig
-from src.webapp.controllers import create_health_router, business_area_router, user_router, login_router
+from src.webapp.controllers import create_health_router, business_area_router, user_router, login_router, survey_router
 
 
 @dataclass
@@ -14,9 +14,10 @@ class WebApp:
     @staticmethod
     def config_routes(app: FastAPI, db_config: DbConfig) -> None:
         app.include_router(create_health_router(db_config), prefix="/health", tags=["Health Check"])
+        app.include_router(login_router, prefix="/login", tags=["Login"])
         app.include_router(business_area_router, prefix="/business_areas", tags=["Business Areas"])
         app.include_router(user_router, prefix="/users", tags=["Users"])
-        app.include_router(login_router, prefix="/login", tags=["Login"])
+        app.include_router(survey_router, prefix="/surveys", tags=["Surveys"])
 
     @staticmethod
     def execute(db_config: DbConfig) -> None:

@@ -49,6 +49,9 @@ class NameType(DescriptionType):
 class EmailType(TypeDecorator):
     impl = VARCHAR(EMAIL_FIELD.max)
 
+class QuestionDescriptionType(TypeDecorator):
+    impl = VARCHAR(8000)
+
 list_base_schema = [
     Column('id', Integer, autoincrement=True, nullable = False, primary_key = True),
     Column('status', Integer, nullable = False)
@@ -68,13 +71,14 @@ list_user_schema = ([x.copy() for x in list_name_type_schema] +
 )
 
 list_survey_schema = [x.copy() for x in list_name_type_schema] 
-list_survey_question_schema =  ([x.copy() for x in list_description_type_schema] + 
+list_question_type_schema = [x.copy() for x in list_base_schema] + [Column('description', QuestionDescriptionType, nullable = False)]
+list_survey_question_schema =  ([x.copy() for x in list_question_type_schema] + 
     [ 
         Column('survey_id', Integer, ForeignKey('Survey.id'),  nullable = False),
         Column('order', Integer, nullable = False)
     ])
 
-list_survey_answer_schema =  ([x.copy() for x in list_description_type_schema] +
+list_survey_answer_schema =  ([x.copy() for x in list_question_type_schema] +
     [ 
         Column('order', Integer, nullable = False),
         Column('survey_question_id', Integer, ForeignKey('SurveyQuestion.id'), nullable = False), 
