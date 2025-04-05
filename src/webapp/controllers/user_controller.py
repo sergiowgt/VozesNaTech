@@ -32,15 +32,38 @@ class UserController(BaseController):
         if (result is None):
             return Response("", status_code=status.HTTP_404_NOT_FOUND)
 
-        return result
+        return {
+                "id": result.id,
+                "status":  result.status,
+                "name": result.name,
+                "email":  result.email,
+                "cell_phone":  result.cell_phone,
+                "ethnicity":  result.ethnicity,
+                "birth_date":  result.birth_date,
+                "female_gender":  result.female_gender
+            }
 
     @user_router.get("/", status_code=status.HTTP_200_OK)
     async def list(self):
         result = self.default_repo.get_all()
         if (result is None):
             return Response("", status_code=status.HTTP_404_NOT_FOUND)
+        
+        users = [
+            {
+                "id": user.id,
+                "status":  user.status,
+                "name": user.name,
+                "email":  user.email,
+                "cell_phone":  user.cell_phone,
+                "ethnicity":  user.ethnicity,
+                "birth_date":  user.birth_date,
+                "female_gender":  user.female_gender
+            }
+            for user in result
+        ]
 
-        return result
+        return users
     
     @user_router.post("/", status_code=status.HTTP_200_OK)
     async def add(self, data: UserInsertModel):

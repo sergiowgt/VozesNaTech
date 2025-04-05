@@ -8,23 +8,20 @@ from src.webapp.models import LoginModel
 import jwt
 from datetime import datetime, timedelta
 
+from src.support.JWT.JWT_config import JWTConfig
+
 # Configuração para hashing de senha
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-# Configuração do JWT
-SECRET_KEY = "Vozes"  # Substitua por uma chave segura
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 login_route = APIRouter()
 login_router = APIRouter()
 
-def create_access_token(data: dict):
+def create_access_token(data: dict, secret_key, algorithm, expire_minutes):
     """Cria um token JWT"""
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.utcnow() + timedelta(minutes=expire_minutes)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, secret_key, algorithm=algorithm)
     return encoded_jwt
 
 @cbv(login_router)
@@ -53,8 +50,8 @@ class LoginController(BaseController):
             )
         
         # Gera o token JWT para o usuário autenticado
-        access_token = create_access_token(data={"sub": entity.email})
-        
+        jwt_config = JWTConfig()
+        access_token = create_access_token(data={"sub": entity.email}, secret_key=jwt_config.SECRET_KEY, algorithm=jwt_config.ALGORITHM, expire_minutes=jwt_config.ACCESS_TOKEN_EXPIRE_MINUTES)
         return {
             "access_token": access_token,
             "token_type": "bearer"

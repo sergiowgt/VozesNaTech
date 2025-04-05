@@ -1,4 +1,3 @@
-DELETE FROM SurveyAnswer;
 DELETE FROM BusinessArea;
 DELETE FROM SurveyQuestion;
 INSERT INTO BusinessArea (id, status, name) VALUES
