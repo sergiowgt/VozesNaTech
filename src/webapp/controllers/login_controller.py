@@ -4,7 +4,7 @@ from passlib.context import CryptContext
 from src.infra.adapters.db_config.db_config import DbConfig
 from src.support.controllers.base_controller import BaseController
 from src.infra.repositories import UserRepository
-from src.webapp.models import LoginModel
+from src.webapp.models import LoginRequestModel, LoginResponseModel
 import jwt
 from datetime import datetime, timedelta
 
@@ -31,8 +31,8 @@ class LoginController(BaseController):
         self.default_repo = UserRepository(self.db)
         self.entity_name = 'Login'
     
-    @login_router.post("/", status_code=status.HTTP_200_OK)
-    async def validate(self, data: LoginModel):
+    @login_router.post("/", status_code=status.HTTP_200_OK, response_model=LoginResponseModel)
+    async def validate(self, data: LoginRequestModel):
         # Busca o usuário pelo email
         entity = self.default_repo.get_by_email(data.email)
         
@@ -52,9 +52,6 @@ class LoginController(BaseController):
         # Gera o token JWT para o usuário autenticado
         jwt_config = JWTConfig()
         access_token = create_access_token(data={"sub": entity.email}, secret_key=jwt_config.SECRET_KEY, algorithm=jwt_config.ALGORITHM, expire_minutes=jwt_config.ACCESS_TOKEN_EXPIRE_MINUTES)
-        return {
-            "access_token": access_token,
-            "token_type": "bearer"
-        }
+        return LoginResponseModel(access_token=access_token, token_type="bearer")
     
 login_route.include_router(login_router)

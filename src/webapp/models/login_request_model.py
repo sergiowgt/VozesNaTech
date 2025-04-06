@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
 @dataclass
-class LoginModel:
+class LoginRequestModel:
     email: str = ''
     password: str = ''

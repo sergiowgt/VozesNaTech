@@ -5,8 +5,9 @@ from src.domain.entities.business_area import BusinessArea
 from src.infra.adapters.db_config.db_config import DbConfig
 from src.support.controllers.base_controller import BaseController
 from src.infra.repositories.business_area_repository import UserRepository
-from src.webapp.models import BusinessAreaInsertModel, BusinessAreaUpdateModel
+from src.webapp.models import BusinessAreaInsertModel, BusinessAreaUpdateModel, BusinessAreaResponseModel, InsertedBusinessAreaResponseModel
 from src.support.enums.status_enum import StatusEnum
+from typing import List
 
 business_area_router = APIRouter()
 
@@ -19,7 +20,7 @@ class BusinessController(BaseController):
         self.default_repo = UserRepository(self.db)
         self.entity_name = 'Business Area'
 
-    @business_area_router.get("/{id}/", status_code=status.HTTP_200_OK)
+    @business_area_router.get("/{id}/", status_code=status.HTTP_200_OK, response_model=BusinessAreaResponseModel)
     async def get(self, id: int):
         result = self.default_repo.get(id=id)
         if result is None:
@@ -27,9 +28,9 @@ class BusinessController(BaseController):
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"{self.entity_name} not found.[id={id}]"
             )
-        return result
+        return BusinessAreaResponseModel(name=result.name, id=result.id, status=result.status)
 
-    @business_area_router.get("/", status_code=status.HTTP_200_OK)
+    @business_area_router.get("/", status_code=status.HTTP_200_OK, response_model=List[BusinessAreaResponseModel])
     async def list(self):
         result = self.default_repo.get_all()
         if not result:
@@ -37,9 +38,14 @@ class BusinessController(BaseController):
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"No {self.entity_name} found."
             )
-        return result
+        
+        business_areas = [
+            BusinessAreaResponseModel(name=reg.name, id=reg.id, status=reg.status)
+            for reg in result
+        ]
+        return business_areas
 
-    @business_area_router.post("/", status_code=status.HTTP_201_CREATED)
+    @business_area_router.post("/", status_code=status.HTTP_201_CREATED, response_model=InsertedBusinessAreaResponseModel)
     async def add(self, data: BusinessAreaInsertModel):
         entity = self.default_repo.get_by_name(data.name)
         if entity:
@@ -52,7 +58,7 @@ class BusinessController(BaseController):
         new_obj.validate()
         self.default_repo.add(new_obj)
         self.db.commit()
-        return new_obj
+        return InsertedBusinessAreaResponseModel(name=new_obj.name, id=new_obj.id)
 
     @business_area_router.put("/{id}/", status_code=status.HTTP_204_NO_CONTENT)
     async def update(self, id: int, data: BusinessAreaUpdateModel):

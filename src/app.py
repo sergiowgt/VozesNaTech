@@ -20,7 +20,7 @@ class WebApp:
         app.include_router(survey_router, prefix="/surveys", tags=["Surveys"])
 
     @staticmethod
-    def execute(db_config: DbConfig) -> None:
+    def execute(db_config: DbConfig, host: str, port: str) -> None:
         # Inicializa os mapeadores do ORM e cria a aplicação FastAPI
         start_mappers()
         
@@ -32,7 +32,7 @@ class WebApp:
                 return app.openapi_schema
             
             openapi_schema = get_openapi(
-                title="Minha API",
+                title="Vozes na Tech API",
                 version="1.0.0",
                 description="Documentação da API com JWT Auth",
                 routes=app.routes,
@@ -55,5 +55,11 @@ class WebApp:
         # Configura as rotas da aplicação
         WebApp.config_routes(app, db_config)
 
-        # Executa o servidor Uvicorn na porta 8000
-        uvicorn.run(app, host='127.0.0.1', port=8000)
+        # Executa o servidor Uvicorn na porta 8000 com suporte a HTTPS
+        uvicorn.run(
+            app,
+            host=host,
+            port=int(port),
+            ssl_keyfile="key.pem",  # Caminho para a chave privada
+            ssl_certfile="cert.pem"  # Caminho para o certificado
+        )
