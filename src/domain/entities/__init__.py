@@ -3,3 +3,4 @@ from .business_area import BusinessArea
 from .survey import Survey
 from .survey_question import SurveyQuestion
 from .survey_answer import SurveyAnswer
+from .user_survey_answer import UserSurveyAnswer

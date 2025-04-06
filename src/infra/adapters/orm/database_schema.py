@@ -1,8 +1,7 @@
-from sqlalchemy import Index, MetaData, Column, ForeignKey, Integer, Table, BigInteger, VARCHAR, TypeDecorator, Time, Date, Boolean
+from sqlalchemy import Index, MetaData, Column, ForeignKey, Integer, Table, BigInteger, VARCHAR, TypeDecorator, Date, Boolean
 from sqlalchemy.orm import registry
 from src.domain.config.config_attributes import DESCRIPTION_FIELD, EMAIL_FIELD, CELLPHONE_FIELD, CPF_FIELD
 from src.support.entities.base_config_atributtes import NAME_FIELD
-from src.support.enums.status_enum import StatusEnum
 
 metadata = MetaData()
 mapper_registry = registry(metadata=metadata)
@@ -53,7 +52,7 @@ class QuestionDescriptionType(TypeDecorator):
     impl = VARCHAR(8000)
 
 list_base_schema = [
-    Column('id', Integer, autoincrement=True, nullable = False, primary_key = True),
+    Column('id', BigInteger, autoincrement=True, nullable = False, primary_key = True),
     Column('status', Integer, nullable = False)
 ]
 
@@ -74,15 +73,15 @@ list_survey_schema = [x.copy() for x in list_name_type_schema]
 list_question_type_schema = [x.copy() for x in list_base_schema] + [Column('description', QuestionDescriptionType, nullable = False)]
 list_survey_question_schema =  ([x.copy() for x in list_question_type_schema] + 
     [ 
-        Column('survey_id', Integer, ForeignKey('Survey.id'),  nullable = False),
+        Column('survey_id', BigInteger, ForeignKey('Survey.id'),  nullable = False),
         Column('order', Integer, nullable = False)
     ])
 
 list_survey_answer_schema =  ([x.copy() for x in list_question_type_schema] +
     [ 
         Column('order', Integer, nullable = False),
-        Column('survey_question_id', Integer, ForeignKey('SurveyQuestion.id'), nullable = False), 
-        Column('business_area_id', Integer, ForeignKey('BusinessArea.id'), nullable = False), 
+        Column('survey_question_id', BigInteger, ForeignKey('SurveyQuestion.id'), nullable = False), 
+        Column('business_area_id', BigInteger, ForeignKey('BusinessArea.id'), nullable = False), 
     ])
 list_business_area_schema = [x.copy() for x in list_name_type_schema] 
 
@@ -118,4 +117,22 @@ business_area_schema = Table(
     'BusinessArea', 
     mapper_registry.metadata,
     *list_business_area_schema
+)
+
+list_user_survey_answer_schema =  ([x.copy() for x in list_base_schema] +
+    [ 
+        Column('user_id', BigInteger, ForeignKey('User.id'), nullable = False), 
+        Column('survey_id', BigInteger, ForeignKey('Survey.id'), nullable = False), 
+        Column('survey_question_id', BigInteger, ForeignKey('SurveyQuestion.id'), nullable = False), 
+        Column('survey_answer_id', BigInteger, ForeignKey('SurveyAnswer.id'), nullable = False), 
+    ])
+
+user_survey_answer_schema = Table(
+    'UserSurveyAnswer', 
+    mapper_registry.metadata,
+    *list_user_survey_answer_schema,
+    Index('ix_user_survey_answer_user_id', 'user_id'),
+    Index('ix_user_survey_answer_survey_id', 'survey_id'),
+    Index('ix_user_survey_answer_question_id', 'survey_question_id'),
+    Index('ix_user_survey_answer_id', 'survey_answer_id')
 )
